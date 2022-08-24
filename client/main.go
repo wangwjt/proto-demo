@@ -7,12 +7,16 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	"log"
+	"proto-demo/client/auth"
 	"proto-demo/grpc/userservice"
 )
 
 func main() {
+	token := &auth.Authentication{
+		Token: "123",
+	}
 	// 1. 新建连接 （没有证书会报错）
-	conn, err := grpc.Dial(":8888", grpc.WithTransportCredentials(insecure.NewCredentials()))
+	conn, err := grpc.Dial(":8888", grpc.WithTransportCredentials(insecure.NewCredentials()), grpc.WithPerRPCCredentials(token))
 	if err != nil {
 		log.Fatal(err)
 	}
