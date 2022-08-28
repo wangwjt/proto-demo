@@ -7,12 +7,13 @@ import (
 	"time"
 )
 
-var UserService = &userService{}
+var UserService = &User{}
 
-type userService struct {
+type User struct {
+	userservice.UnimplementedUserServiceServer
 }
 
-func (u *userService) GetUser(c context.Context, req *userservice.UserReq) (*userservice.UserResp, error) {
+func (u *User) GetUser(c context.Context, req *userservice.UserReq) (*userservice.UserResp, error) {
 	// 实现具体的业务逻辑
 	return &userservice.UserResp{
 		Id:   fmt.Sprint(time.Now().UnixMilli()),
@@ -20,3 +21,5 @@ func (u *userService) GetUser(c context.Context, req *userservice.UserReq) (*use
 		Age:  req.Age,
 	}, nil
 }
+
+func (u *User) mustEmbedUnimplementedUserServiceServer() {}
